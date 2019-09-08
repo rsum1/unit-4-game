@@ -1,0 +1,97 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta http-equiv="X-UA-Compatible" content="ie=edge">
+  <title>Document</title>
+  <!-- Compiled and minified CSS -->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0/css/materialize.min.css">
+  <link rel="stylesheet" href="./assets/css/style.css">
+
+</head>
+
+<body>
+
+  <div class="container">
+    <div class="row" id="message">
+      <nav>
+        <div class="nav-wrapper">
+          <span class="brand-logo center">Dat Crystal Game</span>
+        </div>
+      </nav>
+    </div>
+    <div class="row" id="gems"></div>
+    <div class="row" id="results">
+      <div class="card-panel">
+        <p>
+          Target Number: <span id="goal"></span>
+        </p>
+        <p>
+          Current Number: <span id="current"></span>
+        </p>
+        <p>
+          Wins: <span id="wins"></span>
+        </p>
+        <p>
+          Losses: <span id="losses"></span>
+        </p>
+      </div>
+    </div>
+  </div>
+
+  <!-- Compiled and minified JavaScript -->
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0/js/materialize.min.js"></script>
+
+  <script>
+    let goal = Math.floor(Math.random() * 65) + 45
+    let current = 0
+    let wins = 0
+    let losses = 0
+
+    const renderGems = () => {
+      current = 0
+      goal = Math.floor(Math.random() * 65) + 45
+      document.getElementById('gems').innerHTML = ''
+      for (let i = 0; i < 3; i++) {
+        const random = Math.floor(Math.random() * 20 + 1)
+        let gemElem = document.createElement('div')
+        gemElem.className = 'col s4'
+        gemElem.innerHTML = `
+        <div class="card">
+          <div class="card-image">
+            <img class = "gem" data-value="${random}" src="./assets/images/gem${i + 1}.png">
+          </div>
+        </div>
+        `
+        document.getElementById('gems').append(gemElem)
+      }
+      document.getElementById('goal').textContent = goal
+      document.getElementById('losses').textContent = losses
+      document.getElementById('wins').textContent = wins
+    }
+    
+    document.addEventListener('click', (event) => {
+      if (event.target.className === 'gem') {
+        let gemValue = parseInt(event.target.dataset.value)
+        current += gemValue
+        if (current === goal) {
+          wins++
+          renderGems()
+        } else if (current > goal) {
+          losses++
+          renderGems()
+        } else {
+          document.getElementById('current').textContent = current
+        }
+        // console.log(goal, current, gemValue)
+      }
+    })
+
+    renderGems()
+  </script>
+
+</body>
+
+</html>
